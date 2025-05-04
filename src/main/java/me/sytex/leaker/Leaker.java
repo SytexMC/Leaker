@@ -15,10 +15,16 @@ import java.util.Random;
 public final class Leaker extends JavaPlugin {
 
   private static final Random RANDOM = new Random();
-  private static final long BROADCAST_INTERVAL_TICKS = 30 * 60 * 20;
+
+  private static long broadcastInterval;
+  private static String message;
 
   @Override
   public void onEnable() {
+    saveDefaultConfig();
+
+    loadConfiguration();
+
     new BukkitRunnable() {
       @Override
       public void run() {
@@ -29,16 +35,21 @@ public final class Leaker extends JavaPlugin {
         Player randomPlayer = players.get(RANDOM.nextInt(players.size()));
         Location location = randomPlayer.getLocation();
 
-        Component message = MiniMessage.miniMessage().deserialize(
-            "<#dc143c><player> is currently at <x>, <y>, <z>.",
+        Component component = MiniMessage.miniMessage().deserialize(
+            message,
             Placeholder.unparsed("player", randomPlayer.getName()),
             Placeholder.unparsed("x", String.valueOf(location.getBlockX())),
             Placeholder.unparsed("y", String.valueOf(location.getBlockY())),
             Placeholder.unparsed("z", String.valueOf(location.getBlockZ()))
         );
 
-        players.forEach(player -> player.sendMessage(message));
+        players.forEach(player -> player.sendMessage(component));
       }
-    }.runTaskTimerAsynchronously(this, BROADCAST_INTERVAL_TICKS, BROADCAST_INTERVAL_TICKS);
+    }.runTaskTimerAsynchronously(this, broadcastInterval, broadcastInterval);
+  }
+
+  private void loadConfiguration() {
+    broadcastInterval = getConfig().getLong("interval", 1800) * 20;
+    message = getConfig().getString("message", "<#dc143c><player> is currently at <x>, <y>, <z>.");
   }
 }
