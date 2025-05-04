@@ -1,0 +1,5 @@
+name: Leaker
+version: '0.0.1'
+main: me.sytex.leaker.Leaker
+api-version: '1.20'
+authors: [ SytexMC ]
