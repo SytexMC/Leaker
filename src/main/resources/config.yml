@@ -1,8 +1,8 @@
 # The interval (in seconds) between broadcasts
-broadcast-interval: 1800
+interval: 1800
 
 # The message template for broadcasting player coordinates
 # Available placeholders:
 # - <player>: The name of the selected random player
 # - <x>, <y>, <z>: The coordinates of the player's location
-message-template: "<#dc143c><player> is currently at <x>, <y>, <z>."
+message: "<#dc143c><player> is currently at <x>, <y>, <z>."
