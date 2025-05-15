@@ -15,6 +15,7 @@ import java.util.Random;
 public final class Leaker extends JavaPlugin {
 
   private static final Random RANDOM = new Random();
+  private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage(); // Cache the instance
 
   private static long broadcastInterval;
   private static String message;
@@ -35,7 +36,7 @@ public final class Leaker extends JavaPlugin {
         Player randomPlayer = players.get(RANDOM.nextInt(players.size()));
         Location location = randomPlayer.getLocation();
 
-        Component component = MiniMessage.miniMessage().deserialize(
+        Component component = MINI_MESSAGE.deserialize(
             message,
             Placeholder.unparsed("player", randomPlayer.getName()),
             Placeholder.unparsed("x", String.valueOf(location.getBlockX())),
